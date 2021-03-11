@@ -1,0 +1,70 @@
+{
+	"name": "Notebook 3",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "vijayapachepool",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"synapse_widget": {
+				"version": "0.1"
+			},
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/c5e95693-4d23-4d5c-ad8d-904f30699ecc/resourceGroups/vijaysynapse/providers/Microsoft.Synapse/workspaces/vijaysynapseworkspace/bigDataPools/vijayapachepool",
+				"name": "vijayapachepool",
+				"type": "Spark",
+				"endpoint": "https://vijaysynapseworkspace.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/vijayapachepool",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "2.4",
+				"nodeCount": 10,
+				"cores": 4,
+				"memory": 28,
+				"automaticScaleJobs": false
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"metadata": {
+					"microsoft": {
+						"language": "python"
+					}
+				},
+				"source": [
+					"%%pyspark\r\n",
+					"df = spark.sql(\"SELECT * FROM nyctaxi.passengercountstats\")\r\n",
+					"df = df.repartition(1) # This ensure we'll get a single file during write()\r\n",
+					"df.write.mode(\"overwrite\").csv(\"/NYCTaxi/PassengerCountStats_csvformat\")\r\n",
+					"df.write.mode(\"overwrite\").parquet(\"/NYCTaxi/PassengerCountStats_parquetformat\")"
+				],
+				"execution_count": 1
+			}
+		]
+	}
+}
