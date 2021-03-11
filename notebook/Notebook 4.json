@@ -22,7 +22,76 @@
 		"metadata": {
 			"saveOutput": true,
 			"synapse_widget": {
-				"version": "0.1"
+				"version": "0.1",
+				"state": {
+					"d331207b-d9d3-432b-bd1b-aee7e462d4b7": {
+						"type": "Synapse.DataFrame",
+						"sync_state": {
+							"table": {
+								"rows": [
+									{
+										"AvgTripDistance": "6.305815822404453",
+										"SumTripDistance": "1.254434858998385E7",
+										"PassengerCount": "1"
+									},
+									{
+										"AvgTripDistance": "111.06598920862693",
+										"SumTripDistance": "1.3091570279999273E7",
+										"PassengerCount": "3"
+									},
+									{
+										"AvgTripDistance": "2.8953977276125182",
+										"SumTripDistance": "484437.68000003323",
+										"PassengerCount": "5"
+									},
+									{
+										"AvgTripDistance": "1.8",
+										"SumTripDistance": "3.6",
+										"PassengerCount": "8"
+									},
+									{
+										"AvgTripDistance": "6.727317106789226",
+										"SumTripDistance": "2635668.6600005236",
+										"PassengerCount": "2"
+									},
+									{
+										"AvgTripDistance": "2.9791554340491557",
+										"SumTripDistance": "172174.33000000287",
+										"PassengerCount": "4"
+									},
+									{
+										"AvgTripDistance": "2.899135202285126",
+										"SumTripDistance": "296384.390000013",
+										"PassengerCount": "6"
+									}
+								],
+								"schema": {
+									"PassengerCount": "int",
+									"SumTripDistance": "double",
+									"AvgTripDistance": "double"
+								}
+							},
+							"isSummary": false,
+							"language": "scala"
+						},
+						"persist_state": {
+							"view": {
+								"type": "details",
+								"chartOptions": {
+									"chartType": "bar",
+									"aggregationType": "sum",
+									"categoryFieldKeys": [
+										"SumTripDistance"
+									],
+									"seriesFieldKeys": [
+										"PassengerCount"
+									],
+									"isStacked": false
+								}
+							}
+						}
+					}
+				}
 			},
 			"kernelspec": {
 				"name": "synapse_pyspark",
@@ -54,14 +123,15 @@
 				"metadata": {
 					"microsoft": {
 						"language": "python"
-					}
+					},
+					"collapsed": false
 				},
 				"source": [
 					"%%pyspark\r\n",
 					"df = spark.read.load('abfss://vijaysynapseadl@vijaysynapseadl.dfs.core.windows.net/NYCTaxi/PassengerCountStats_parquetformat/part-00000-03c37f4a-7e92-4ac5-9fb4-8f22257570f3-c000.snappy.parquet', format='parquet')\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": 1
+				"execution_count": 3
 			}
 		]
 	}
