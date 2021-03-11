@@ -25975,6 +25975,230 @@
 				]
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Notebook 4')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "vijayapachepool",
+					"type": "BigDataPoolReference"
+				},
+				"sessionProperties": {
+					"driverMemory": "28g",
+					"driverCores": 4,
+					"executorMemory": "28g",
+					"executorCores": 4,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"synapse_widget": {
+						"version": "0.1",
+						"state": {
+							"d331207b-d9d3-432b-bd1b-aee7e462d4b7": {
+								"type": "Synapse.DataFrame",
+								"sync_state": {
+									"table": {
+										"rows": [
+											{
+												"AvgTripDistance": "6.305815822404453",
+												"SumTripDistance": "1.254434858998385E7",
+												"PassengerCount": "1"
+											},
+											{
+												"AvgTripDistance": "111.06598920862693",
+												"SumTripDistance": "1.3091570279999273E7",
+												"PassengerCount": "3"
+											},
+											{
+												"AvgTripDistance": "2.8953977276125182",
+												"SumTripDistance": "484437.68000003323",
+												"PassengerCount": "5"
+											},
+											{
+												"AvgTripDistance": "1.8",
+												"SumTripDistance": "3.6",
+												"PassengerCount": "8"
+											},
+											{
+												"AvgTripDistance": "6.727317106789226",
+												"SumTripDistance": "2635668.6600005236",
+												"PassengerCount": "2"
+											},
+											{
+												"AvgTripDistance": "2.9791554340491557",
+												"SumTripDistance": "172174.33000000287",
+												"PassengerCount": "4"
+											},
+											{
+												"AvgTripDistance": "2.899135202285126",
+												"SumTripDistance": "296384.390000013",
+												"PassengerCount": "6"
+											}
+										],
+										"schema": {
+											"PassengerCount": "int",
+											"SumTripDistance": "double",
+											"AvgTripDistance": "double"
+										}
+									},
+									"isSummary": false,
+									"language": "scala"
+								},
+								"persist_state": {
+									"view": {
+										"type": "details",
+										"tableOptions": {},
+										"chartOptions": {
+											"chartType": "bar",
+											"aggregationType": "sum",
+											"categoryFieldKeys": [
+												"SumTripDistance"
+											],
+											"seriesFieldKeys": [
+												"PassengerCount"
+											],
+											"isStacked": false
+										}
+									}
+								}
+							}
+						}
+					},
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "Synapse PySpark"
+					},
+					"language_info": {
+						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/c5e95693-4d23-4d5c-ad8d-904f30699ecc/resourceGroups/vijaysynapse/providers/Microsoft.Synapse/workspaces/vijaysynapseworkspace/bigDataPools/vijayapachepool",
+						"name": "vijayapachepool",
+						"type": "Spark",
+						"endpoint": "https://vijaysynapseworkspace.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/vijayapachepool",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "2.4",
+						"nodeCount": 10,
+						"cores": 4,
+						"memory": 28,
+						"automaticScaleJobs": false
+					},
+					"sessionKeepAliveTimeout": 30
+				},
+				"cells": [
+					{
+						"cell_type": "code",
+						"metadata": {
+							"microsoft": {
+								"language": "python"
+							},
+							"collapsed": false
+						},
+						"source": [
+							"%%pyspark\r\n",
+							"df = spark.read.load('abfss://vijaysynapseadl@vijaysynapseadl.dfs.core.windows.net/NYCTaxi/PassengerCountStats_parquetformat/part-00000-03c37f4a-7e92-4ac5-9fb4-8f22257570f3-c000.snappy.parquet', format='parquet')\r\n",
+							"display(df.limit(10))"
+						],
+						"outputs": [],
+						"execution_count": 3
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQL script 5')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "SELECT\n    TOP 100 *\nFROM\n    OPENROWSET(\n        BULK 'https://vijaysynapseadl.dfs.core.windows.net/vijaysynapseadl/NYCTaxi/PassengerCountStats_parquetformat/part-00000-03c37f4a-7e92-4ac5-9fb4-8f22257570f3-c000.snappy.parquet',\n        FORMAT='PARQUET'\n    ) AS [result]\n",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"poolName": "Built-in",
+						"databaseName": "master"
+					}
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Pipeline 1')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Notebook1",
+						"type": "SynapseNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebook": {
+								"referenceName": "Notebook 1",
+								"type": "NotebookReference"
+							}
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/notebooks/Notebook 1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Trigger 1')]",
+			"type": "Microsoft.Synapse/workspaces/triggers",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Pipeline 1",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Hour",
+						"interval": 1,
+						"startTime": "2021-03-11T14:58:00Z",
+						"timeZone": "UTC"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/pipelines/Pipeline 1')]"
+			]
 		}
 	]
 }
