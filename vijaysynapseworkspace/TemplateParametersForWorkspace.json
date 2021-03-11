@@ -10,6 +10,9 @@
 		},
 		"vijaysynapseworkspace-WorkspaceDefaultStorage_properties_typeProperties_url": {
 			"value": "https://vijaysynapseadl.dfs.core.windows.net"
+		},
+		"nyc_tlc_yellow_sasUri": {
+			"value": ""
 		}
 	}
 }
