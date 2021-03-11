@@ -1,0 +1,12 @@
+{
+	"name": "powerbiworkspace",
+	"properties": {
+		"description": "connection to VijayNYCTaxiworkspace",
+		"annotations": [],
+		"type": "PowerBIWorkspace",
+		"typeProperties": {
+			"workspaceID": "f3270a47-faa0-406b-888f-c151943a5840",
+			"tenantID": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+		}
+	}
+}
